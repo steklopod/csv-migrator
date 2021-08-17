@@ -21,7 +21,7 @@ object Converter {
                 it.managerLogin = login
                 if (withExt) {
                     logger.info("\uD83D\uDC35 '-ext' суффикс будет добавлен к логину $login \n")
-                     it.managerLogin = "$login-ext"
+                    it.managerLogin = "$login-ext"
                 }
                 logger.info("Логин заменен: ${it.managerLogin} --> $login\n")
             }
