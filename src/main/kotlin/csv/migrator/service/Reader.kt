@@ -5,13 +5,13 @@ import csv.migrator.model.Compass
 import csv.migrator.model.Iserve
 import csv.migrator.model.Migration
 import io.blackmo18.kotlin.grass.dsl.grass
-import mu.KotlinLogging
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Paths
 
 @ExperimentalStdlibApi
 object Reader {
-    private val logger = KotlinLogging.logger {}
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     private const val folder = "/src/main/resources"
 
@@ -28,7 +28,7 @@ object Reader {
         val file = fileInResources.let {
             if (it.exists()) it else Paths.get(root, fileName).toAbsolutePath().toFile()
         }
-        logger.info { "Поиск файла: $fileName по пути, $file \n" }
+        logger.info("Поиск файла: $fileName по пути, $file \n")
         return file
     }
 
@@ -37,7 +37,7 @@ object Reader {
         val fileCompass = file(compassFile)
         val rowsCompass = csvReader().readAllWithHeader(fileCompass)
         val compass = grass<Compass>().harvest(rowsCompass)
-        logger.info { "Найдено ${compass.size} строк COMPASS в файле: $compassFile \n" }
+        logger.info("Найдено ${compass.size} строк COMPASS в файле: $compassFile \n")
         return compass
     }
 
@@ -47,7 +47,7 @@ object Reader {
         val iserveReader = csvReader { quoteChar = '"'; delimiter = ';' }
         val rowsIserve = iserveReader.readAllWithHeader(fileIserve)
         val iserve = grass<Iserve>().harvest(rowsIserve)
-        logger.info { "Найдено ${iserve.size} строк ISERVE в файле: $iserveFile \n" }
+        logger.info("Найдено ${iserve.size} строк ISERVE в файле: $iserveFile \n")
         return iserve
     }
 
@@ -57,7 +57,7 @@ object Reader {
         val migrationReader = csvReader { delimiter = ';' }
         val rowsMigration = migrationReader.readAllWithHeader(fileMigration)
         val migrations = grass<Migration>().harvest(rowsMigration)
-        logger.info { "Найдено ${migrations.size} строк МИГРАЦИЙ в файле: $migrationFile \n" }
+        logger.info("Найдено ${migrations.size} строк МИГРАЦИЙ в файле: $migrationFile \n")
         return migrations
     }
 

@@ -7,7 +7,6 @@ plugins {
 repositories { mavenCentral() }
 
 dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib-jdk8"))
 
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.2")
@@ -15,16 +14,11 @@ dependencies {
     implementation("io.github.blackmo18:kotlin-grass-parser-jvm:0.8.0")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation ("io.github.microutils:kotlin-logging-jvm:2.0.10")
-    implementation ("org.slf4j:slf4j-api:2.0.0-alpha4")
-    implementation ("org.slf4j:slf4j-simple:2.0.0-alpha4")
-}
 
-application {
-    val name = "csv.migrator.App"
-    mainClass.set(name)
-    // Required by ShadowJar.
-    mainClassName = name
+    val slf4 = "2.0.0-alpha4"
+    implementation ("org.slf4j:slf4j-api:$slf4")
+    implementation ("org.slf4j:slf4j-simple:$slf4")
 }
 group = "csv.migrator"
+application { val name = "$group.App"; mainClass.set(name); mainClassName = name }
 tasks{ withType<Jar> { manifest { attributes["Main-Class"] = application.mainClass } } }

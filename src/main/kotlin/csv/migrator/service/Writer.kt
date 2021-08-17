@@ -4,14 +4,14 @@ import com.github.doyaaaaaken.kotlincsv.dsl.context.WriteQuoteMode
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import csv.migrator.model.Iserve
 import csv.migrator.service.Reader.iserveFile
-import mu.KotlinLogging
+import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import kotlin.reflect.full.memberProperties
 
 
 @ExperimentalStdlibApi
 object Writer {
-    private val logger = KotlinLogging.logger {}
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun writeIserve(iserveUpdated: List<Iserve>): List<List<String?>> {
         val fileIserve = Reader.file(iserveFile)
@@ -30,7 +30,7 @@ object Writer {
         val newFile = Reader.file(newFileName)
         writer.writeAll(rows, newFile) // TODO
 
-        logger.info { "Записано ${rows.size} строк в файл: $newFileName по пути: $newFile \n" }
+        logger.info("Записано ${rows.size} строк в файл: $newFileName по пути: $newFile \n")
         return rows
     }
 

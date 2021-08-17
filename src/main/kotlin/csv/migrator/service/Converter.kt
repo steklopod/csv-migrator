@@ -2,11 +2,11 @@ package csv.migrator.service
 
 import csv.migrator.model.Iserve
 import csv.migrator.model.Migration
-import mu.KotlinLogging
+import org.slf4j.LoggerFactory
 
 @ExperimentalStdlibApi
 object Converter {
-    private val logger = KotlinLogging.logger {}
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun migrateIserve(withExt: Boolean): List<List<String?>> {
         val migrationsMap = Reader.readMigrationsMap()
@@ -20,10 +20,10 @@ object Converter {
                 it.crmLogin = login
                 it.managerLogin = login
                 if (withExt) {
-                    logger.info { "\uD83D\uDC35 '-ext' суффикс будет добавлен к логину $login \n" }
+                    logger.info("\uD83D\uDC35 '-ext' суффикс будет добавлен к логину $login \n")
                      it.managerLogin = "$login-ext"
                 }
-                logger.info { "Логин заменен: ${it.managerLogin} --> $login\n" }
+                logger.info("Логин заменен: ${it.managerLogin} --> $login\n")
             }
             it
         }
