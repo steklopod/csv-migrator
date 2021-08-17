@@ -1,9 +1,9 @@
 package csv.migrator.model
 
 data class Iserve(
-    var managerTubNumber: String?,
-    var managerLogin: String?,
-    var crmLogin: String?,
+    override val managerTubNumber: String?,
+    override var managerLogin: String?,
+    override var crmLogin: String?,
 
     val MKK_ROLE: String?,
     val active: String?,
@@ -46,4 +46,4 @@ data class Iserve(
     val vspNum: String?,
     val workPhone: String?,
     val workPhoneExt: String?
-)
+): Manager

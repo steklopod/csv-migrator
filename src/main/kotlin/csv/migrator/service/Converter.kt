@@ -7,17 +7,15 @@ import org.slf4j.LoggerFactory
 
 @ExperimentalStdlibApi
 object Converter {
-    private val logger = LoggerFactory.getLogger(this::class.java)
-
     fun migrateIserve(): List<List<String?>> {
-        println("\uD83C\uDFB1 Выбран режим миграции для iserve")
+        logger.info("\uD83C\uDFB1 Выбран режим миграции для iserve\n")
         val migrationsMap = Reader.readMigrationsMap()
         val iserveUpdated: List<Iserve> = updateIserveLogins(migrationsMap)
         return Writer.writeIserve(iserveUpdated)
     }
 
     fun migrateCompass(): List<List<String?>> {
-        println("\uD83C\uDFB1 Выбран режим EXT: миграция для compass")
+        logger.info("\uD83C\uDFB1 Выбран режим EXT: миграция для compass\n")
         val migrationsMap = Reader.readMigrationsMap()
         val compassUpdated: List<Compass> = updateCompassLogins(migrationsMap)
         return Writer.writeCompass(compassUpdated)
@@ -25,27 +23,36 @@ object Converter {
 
     private fun updateIserveLogins(migrationsMap: Map<String?, Migration>): List<Iserve> {
         val readIserve = Reader.readIserve()
-        return readIserve.map {
+        var counter = 0
+        val iserveManagers = readIserve.map {
             migrationsMap[it.managerTubNumber]?.NEW_LOGIN?.let { login ->
-                logger.info("Логин заменен: ${it.managerLogin} --> $login\n")
+                counter++
+                logger.info("\uD83D\uDFE6 Найдена замена! Логин заменен: ${it.managerLogin} --> $login")
                 it.crmLogin = login
                 it.managerLogin = login
             }
             it
         }
+        logger.info("\n\t♨️ Заменено [$counter] строк ")
+        return iserveManagers
     }
 
     private fun updateCompassLogins(migrationsMap: Map<String?, Migration>): List<Compass> {
         val readCompass = Reader.readCompass()
-        return readCompass.map {
+        var counter = 0
+        val compassManagers = readCompass.map {
             migrationsMap[it.managerTubNumber]?.NEW_LOGIN?.let { login ->
-                logger.info("Логин заменен: ${it.managerLogin} --> $login-ext \n")
+                counter++
+                logger.info("\uD83D\uDFE6 Найдена `-ext` замена! Логин заменен: ${it.managerLogin} --> $login-ext")
                 it.crmLogin = login
                 it.managerLogin = "$login-ext"
             }
             it
         }
+        logger.info("\n\t♨️ Заменено [$counter] строк ")
+        return compassManagers
     }
 
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
 }

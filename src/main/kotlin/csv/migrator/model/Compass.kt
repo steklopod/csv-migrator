@@ -1,9 +1,9 @@
 package csv.migrator.model
 
 data class Compass(
-    val managerTubNumber: String?,
-    var crmLogin: String?,
-    var managerLogin: String?,
+    override val managerTubNumber: String?,
+    override var crmLogin: String?,
+    override var managerLogin: String?,
 
     val active: String?,
     val chief: String?,
@@ -42,4 +42,4 @@ data class Compass(
     val vspNum: String?,
     val workPhone: String?,
     val workPhoneExt: String?
-)
+): Manager
