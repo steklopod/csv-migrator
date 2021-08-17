@@ -44,12 +44,12 @@ object Writer {
         }
     }
 
-    private fun rows(compassUpdated: List<Manager>, csvFile: String): MutableList<List<String?>> {
+    private inline fun<reified T: Manager> rows(compassUpdated: List<T>, csvFile: String): MutableList<List<String?>> {
         val headers = headers(csvFile)
         val rows: MutableList<List<String?>> = mutableListOf(headers)
-        compassUpdated.forEach { compass ->
-            val hashMap = compass.asMap()
-            val row = headers.map { hashMap[it]?.toString() }
+        compassUpdated.forEach {
+            val hashMap = it.asMap()
+            val row = headers.map { h -> hashMap[h]?.toString() }
             rows.add(row)
         }
         return rows
