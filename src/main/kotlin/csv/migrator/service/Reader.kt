@@ -28,11 +28,10 @@ object Reader {
         val file = fileInResources.let {
             if (it.exists()) it else Paths.get(root, fileName).toAbsolutePath().toFile()
         }
-        logger.info("Поиск файла: $fileName по пути, $file \n")
+        logger.info("Поиск файла: $fileName по пути: $file \n")
         return file
     }
 
-    fun readCompassMap(): Map<String?, Compass> = readCompass().associateBy { it.managerTubNumber }
     fun readCompass(): List<Compass> {
         val fileCompass = file(compassFile)
         val rowsCompass = csvReader().readAllWithHeader(fileCompass)
@@ -41,7 +40,6 @@ object Reader {
         return compass
     }
 
-    fun readIserveMap(): Map<String?, Iserve> = readIserve().associateBy { it.managerTubNumber }
     fun readIserve(): List<Iserve> {
         val fileIserve = file(iserveFile)
         val iserveReader = csvReader { quoteChar = '"'; delimiter = ';' }
